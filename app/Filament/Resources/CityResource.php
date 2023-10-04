@@ -4,9 +4,13 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\CityResource\Pages;
 use App\Filament\Resources\CityResource\RelationManagers;
+use App\Filament\Resources\CityResource\RelationManagers\EmployeesRelationManager;
 use App\Models\City;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Infolists\Components\Section;
+use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -33,7 +37,7 @@ class CityResource extends Resource
             ->schema([
                 Forms\Components\Section::make('City Details')
                 ->schema([
-                    Forms\Components\Select::make('state_id')
+                    Forms\Components\Select::make('state.name')
                         ->relationship(name: 'state', titleAttribute: 'name')
                         ->searchable()
                         ->preload()
@@ -49,8 +53,22 @@ class CityResource extends Resource
     {
         return $table
             ->columns([
-                //
-            ])
+                Tables\Columns\TextColumn::make('country.name')
+                    ->sortable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('name')
+                    ->label('State name')
+                    ->sortable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('updated_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+            ])->defaultSort('country.name', 'desc')
             ->filters([
                 //
             ])
@@ -63,17 +81,30 @@ class CityResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ])
-            ->emptyStateActions([
+            ->emptyStateActions([ 
                 Tables\Actions\CreateAction::make(),
+            ]);
+    }
+
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        return $infolist
+            ->schema([
+                Section::make('City Info')
+                    ->schema([
+                        TextEntry::make('state.name')->label('State Name'),
+                        TextEntry::make('name')->label('City name'),
+                    ])->columns(2)
             ]);
     }
 
     public static function getRelations(): array
     {
-        return [
-            //
+        return [ 
+            EmployeesRelationManager::class
         ];
     }
+
 
     public static function getPages(): array
     {
