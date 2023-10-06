@@ -24,30 +24,31 @@ class CountryResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-flag';
 
-    protected static ?string $navigationLabel = "Country";
+    protected static ?string $navigationLabel = 'Country';
 
-    protected static ?string $modelLabel = "Employees Country";
+    protected static ?string $modelLabel = 'Employees Country';
 
-    protected static ?string $navigationGroup = "System Management";
+    protected static ?string $navigationGroup = 'System Management';
 
     protected static ?int $navigationSort = 1;
-
-    // protected static ?string $slug = "employees-countries";
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('code')
-                    ->required()
-                    ->maxLength(3),
-                Forms\Components\TextInput::make('phonecode')
-                    ->required()
-                    ->numeric()
-                    ->maxLength(5),
+                Forms\Components\Section::make('Country Details')
+                    ->schema([
+                        Forms\Components\TextInput::make('name')
+                            ->required()
+                            ->maxLength(255),
+                        Forms\Components\TextInput::make('code')
+                            ->required()
+                            ->maxLength(3),
+                        Forms\Components\TextInput::make('phonecode')
+                            ->required()
+                            ->numeric()
+                            ->maxLength(5),
+                    ])
             ]);
     }
 
@@ -96,16 +97,19 @@ class CountryResource extends Resource
                 Section::make('Country Info')
                     ->schema([
                         TextEntry::make('name')->label('Name'),
-                        TextEntry::make('name')->label('Country Code'),
+                        TextEntry::make('code')->label(
+                            'Country Code'
+                        ),
                         TextEntry::make('phonecode')->label('Phone Code'),
                     ])->columns(2)
             ]);
     }
+
     public static function getRelations(): array
     {
         return [
             StatesRelationManager::class,
-            EmployeesRelationManager::class,
+            EmployeesRelationManager::class
         ];
     }
 

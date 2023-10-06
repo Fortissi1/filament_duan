@@ -31,7 +31,6 @@ class StatesRelationManager extends RelationManager
             ->columns([
                 Tables\Columns\TextColumn::make('id'),
                 Tables\Columns\TextColumn::make('name'),
-                
             ])
             ->filters([
                 //

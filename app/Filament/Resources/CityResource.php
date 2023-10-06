@@ -23,11 +23,11 @@ class CityResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-building-office-2';
 
-    protected static ?string $navigationLabel = "City";
+    protected static ?string $navigationLabel = 'City';
 
-    protected static ?string $modelLabel = "Cities";
+    protected static ?string $modelLabel = 'City';
 
-    protected static ?string $navigationGroup = "System Management";
+    protected static ?string $navigationGroup = 'System Management';
 
     protected static ?int $navigationSort = 3;
 
@@ -36,16 +36,16 @@ class CityResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Section::make('City Details')
-                ->schema([
-                    Forms\Components\Select::make('state.name')
-                        ->relationship(name: 'state', titleAttribute: 'name')
-                        ->searchable()
-                        ->preload()
-                        ->required(),
-                    Forms\Components\TextInput::make('name')
-                        ->required()
-                        ->maxLength(255),
-                ])
+                    ->schema([
+                        Forms\Components\Select::make('state_id')
+                            ->relationship(name: 'state', titleAttribute: 'name')
+                            ->searchable()
+                            ->preload()
+                            ->required(),
+                        Forms\Components\TextInput::make('name')
+                            ->required()
+                            ->maxLength(255),
+                    ])
             ]);
     }
 
@@ -53,12 +53,10 @@ class CityResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('country.name')
-                    ->sortable()
-                    ->searchable(),
+                Tables\Columns\TextColumn::make('state.name')
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('name')
-                    ->label('State name')
-                    ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
@@ -68,7 +66,7 @@ class CityResource extends Resource
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-            ])->defaultSort('country.name', 'desc')
+            ])
             ->filters([
                 //
             ])
@@ -81,7 +79,7 @@ class CityResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ])
-            ->emptyStateActions([ 
+            ->emptyStateActions([
                 Tables\Actions\CreateAction::make(),
             ]);
     }
@@ -100,11 +98,10 @@ class CityResource extends Resource
 
     public static function getRelations(): array
     {
-        return [ 
+        return [
             EmployeesRelationManager::class
         ];
     }
-
 
     public static function getPages(): array
     {

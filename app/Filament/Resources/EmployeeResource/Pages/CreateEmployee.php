@@ -15,8 +15,8 @@ class CreateEmployee extends CreateRecord
     protected function getCreatedNotification(): ?Notification
     {
         return Notification::make()
-        ->success()->title('Employee created')->body('The Employee created successfully.');
+            ->success()
+            ->title('Employee created.')
+            ->body('The Employee created successfully.');
     }
-
-    
 }
